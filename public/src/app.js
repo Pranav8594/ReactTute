@@ -19,12 +19,35 @@ var template = ( //JSX: Javascrpt XML
 ); //JSX expressions can only have one root element; wrap in <div>
 
 let count = 0;
-const templateTwo = (
-    <div>
-        <h1>Count:{count}</h1>
-        <button id="my-id" className="button">+1</button>
-    </div>
-)
+const increment=()=>{
+    count++;
+    console.log("add one",count);
+    renderApp();
+}
+const decrement=()=>{
+    if(count >0){
+        count--;
+    }
+    renderApp();
+    console.log("minus one",count);
+}
+const reset=()=>{
+    count=0;
+    renderApp();
+    console.log("reset",count);
+}
 
 var appRoot =  document.getElementById('app');
-ReactDOM.render(templateTwo,appRoot);
+const renderApp = () =>{
+    const templateTwo = (
+        <div>
+            <h1>Count:{count}</h1>
+            <button  onClick={increment}>+1</button>
+            <button  onClick={decrement}>-1</button>
+            <button  onClick={reset}>reset</button>
+        </div>
+    );
+    ReactDOM.render(templateTwo,appRoot);
+}
+
+renderApp();

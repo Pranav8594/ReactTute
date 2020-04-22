@@ -44,21 +44,52 @@ React.createElement(
 ); //JSX expressions can only have one root element; wrap in <div>
 
 var count = 0;
-var templateTwo = React.createElement(
-    'div',
-    null,
-    React.createElement(
-        'h1',
-        null,
-        'Count:',
-        count
-    ),
-    React.createElement(
-        'button',
-        { id: 'my-id', className: 'button' },
-        '+1'
-    )
-);
+var increment = function increment() {
+    count++;
+    console.log("add one", count);
+    renderApp();
+};
+var decrement = function decrement() {
+    if (count > 0) {
+        count--;
+    }
+    renderApp();
+    console.log("minus one", count);
+};
+var reset = function reset() {
+    count = 0;
+    renderApp();
+    console.log("reset", count);
+};
 
 var appRoot = document.getElementById('app');
-ReactDOM.render(templateTwo, appRoot);
+var renderApp = function renderApp() {
+    var templateTwo = React.createElement(
+        'div',
+        null,
+        React.createElement(
+            'h1',
+            null,
+            'Count:',
+            count
+        ),
+        React.createElement(
+            'button',
+            { onClick: increment },
+            '+1'
+        ),
+        React.createElement(
+            'button',
+            { onClick: decrement },
+            '-1'
+        ),
+        React.createElement(
+            'button',
+            { onClick: reset },
+            'reset'
+        )
+    );
+    ReactDOM.render(templateTwo, appRoot);
+};
+
+renderApp();
