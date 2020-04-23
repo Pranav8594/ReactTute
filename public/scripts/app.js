@@ -1,42 +1,21 @@
 'use strict';
 
-console.log('App.js is running!');
-
 var app = {
-    title: 'Indecision App',
-    subtitle: 'Put your life in the hands of a computer',
-    options: []
+    title: 'Visibility toggle',
+    msg: 'Hey! I am visible now',
+    toggle: false
 };
 
-var onFormSubmit = function onFormSubmit(e) {
-    e.preventDefault(); //prevents normal form behaviour
-    var option = e.target.elements.option.value; //tagetting form element here 
-    console.log(e);
-    if (option) {
-        app.options.push(option);
-        e.target.elements.option.value = '';
-    }
-    renderApp();
-};
-
-//TODO: create remove all button
-//on click -> wipe the array and -> re-render
-var removeAll = function removeAll() {
-
-    app.options.length = 0; //empty array
-    renderApp();
-};
-
-var onMakeDecision = function onMakeDecision() {
-    var randomNum = Math.floor(Math.random() * app.options.length); //getting rid of decimals
-    var option = app.options[randomNum];
-    alert(option);
+var onToggle = function onToggle() {
+    app.toggle = !app.toggle;
+    console.log(app.toggle);
+    render();
 };
 
 var appRoot = document.getElementById('app');
-var renderApp = function renderApp() {
-    var template = //JSX: Javascrpt XML
-    React.createElement(
+
+var render = function render() {
+    var template = React.createElement(
         'div',
         null,
         React.createElement(
@@ -45,54 +24,20 @@ var renderApp = function renderApp() {
             app.title
         ),
         React.createElement(
-            'p',
-            null,
-            app.subtitle && React.createElement(
-                'p',
-                null,
-                app.subtitle
-            )
+            'button',
+            { onClick: onToggle },
+            app.toggle ? 'Hide details' : 'Show details'
         ),
         React.createElement(
             'p',
             null,
-            app.options.length > 0 ? 'Here are your options' : 'No options',
-            ' '
-        ),
-        React.createElement(
-            'ol',
-            null,
-            /*Array of JSX */
-            app.options.map(function (option) {
-                return React.createElement(
-                    'li',
-                    { key: option },
-                    option
-                );
-            })
-        ),
-        React.createElement(
-            'form',
-            { onSubmit: onFormSubmit },
-            React.createElement('input', { type: 'text', name: 'option' }),
-            React.createElement(
-                'button',
+            app.toggle && React.createElement(
+                'span',
                 null,
-                'Add Option'
-            ),
-            React.createElement(
-                'button',
-                { onClick: removeAll },
-                'Remove All'
-            ),
-            React.createElement(
-                'button',
-                { disabled: app.options.length === 0, onClick: onMakeDecision },
-                'What should i do?'
+                app.msg
             )
         )
-    ); //JSX expressions can only have one root element; wrap in <div>
+    );
     ReactDOM.render(template, appRoot);
 };
-
-renderApp();
+render();
