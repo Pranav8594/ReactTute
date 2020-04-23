@@ -15,32 +15,42 @@ React.createElement(
     React.createElement(
         'h1',
         null,
-        app.title
+        ' ',
+        app.title,
+        ' '
     ),
+    ' ',
     React.createElement(
         'p',
         null,
-        app.subtitle
+        ' ',
+        app.subtitle,
+        ' '
     ),
+    ' ',
     React.createElement(
         'p',
         null,
         ' '
     ),
+    ' ',
     React.createElement(
         'ol',
         null,
         React.createElement(
             'li',
             null,
-            'item One'
+            ' item One '
         ),
+        ' ',
         React.createElement(
             'li',
             null,
-            'item Two'
-        )
-    )
+            ' item Two '
+        ),
+        ' '
+    ),
+    ' '
 ); //JSX expressions can only have one root element; wrap in <div>
 
 var count = 0;
@@ -70,24 +80,29 @@ var renderApp = function renderApp() {
         React.createElement(
             'h1',
             null,
-            'Count:',
-            count
+            ' Count: ',
+            count,
+            ' '
         ),
+        ' ',
         React.createElement(
             'button',
             { onClick: increment },
-            '+1'
+            ' +1 '
         ),
+        ' ',
         React.createElement(
             'button',
             { onClick: decrement },
-            '-1'
+            ' -1 '
         ),
+        ' ',
         React.createElement(
             'button',
             { onClick: reset },
-            'reset'
-        )
+            ' reset '
+        ),
+        ' '
     );
     ReactDOM.render(templateTwo, appRoot);
 };
