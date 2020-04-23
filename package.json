@@ -8,7 +8,9 @@
     "babel-preset-react": "6.24.1"
   },
   "scripts": {
-    "babel-version": "babel --version"
+    "babel-version": "babel --version",
+    "babel-b":"babel public\\src\\app.js --out-file=public\\scripts\\app.js --presets=env,react",
+    "babel-b-w": "babel public\\src\\app.js --out-file=public\\scripts\\app.js --presets=env,react --watch"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",

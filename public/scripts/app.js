@@ -5,106 +5,94 @@ console.log('App.js is running!');
 var app = {
     title: 'Indecision App',
     subtitle: 'Put your life in the hands of a computer',
-    options: ['One', 'Two']
+    options: []
 };
 
-var template = //JSX: Javascrpt XML
-React.createElement(
-    'div',
-    null,
-    React.createElement(
-        'h1',
-        null,
-        ' ',
-        app.title,
-        ' '
-    ),
-    ' ',
-    React.createElement(
-        'p',
-        null,
-        ' ',
-        app.subtitle,
-        ' '
-    ),
-    ' ',
-    React.createElement(
-        'p',
-        null,
-        ' '
-    ),
-    ' ',
-    React.createElement(
-        'ol',
-        null,
-        React.createElement(
-            'li',
-            null,
-            ' item One '
-        ),
-        ' ',
-        React.createElement(
-            'li',
-            null,
-            ' item Two '
-        ),
-        ' '
-    ),
-    ' '
-); //JSX expressions can only have one root element; wrap in <div>
-
-var count = 0;
-var increment = function increment() {
-    count++;
-    console.log("add one", count);
-    renderApp();
-};
-var decrement = function decrement() {
-    if (count > 0) {
-        count--;
+var onFormSubmit = function onFormSubmit(e) {
+    e.preventDefault(); //prevents normal form behaviour
+    var option = e.target.elements.option.value; //tagetting form element here 
+    console.log(e);
+    if (option) {
+        app.options.push(option);
+        e.target.elements.option.value = '';
     }
     renderApp();
-    console.log("minus one", count);
 };
-var reset = function reset() {
-    count = 0;
+
+//TODO: create remove all button
+//on click -> wipe the array and -> re-render
+var removeAll = function removeAll() {
+
+    app.options.length = 0; //empty array
     renderApp();
-    console.log("reset", count);
+};
+
+var onMakeDecision = function onMakeDecision() {
+    var randomNum = Math.floor(Math.random() * app.options.length); //getting rid of decimals
+    var option = app.options[randomNum];
+    alert(option);
 };
 
 var appRoot = document.getElementById('app');
 var renderApp = function renderApp() {
-    var templateTwo = React.createElement(
+    var template = //JSX: Javascrpt XML
+    React.createElement(
         'div',
         null,
         React.createElement(
             'h1',
             null,
-            ' Count: ',
-            count,
+            app.title
+        ),
+        React.createElement(
+            'p',
+            null,
+            app.subtitle && React.createElement(
+                'p',
+                null,
+                app.subtitle
+            )
+        ),
+        React.createElement(
+            'p',
+            null,
+            app.options.length > 0 ? 'Here are your options' : 'No options',
             ' '
         ),
-        ' ',
         React.createElement(
-            'button',
-            { onClick: increment },
-            ' +1 '
+            'ol',
+            null,
+            /*Array of JSX */
+            app.options.map(function (option) {
+                return React.createElement(
+                    'li',
+                    { key: option },
+                    option
+                );
+            })
         ),
-        ' ',
         React.createElement(
-            'button',
-            { onClick: decrement },
-            ' -1 '
-        ),
-        ' ',
-        React.createElement(
-            'button',
-            { onClick: reset },
-            ' reset '
-        ),
-        ' '
-    );
-    ReactDOM.render(templateTwo, appRoot);
+            'form',
+            { onSubmit: onFormSubmit },
+            React.createElement('input', { type: 'text', name: 'option' }),
+            React.createElement(
+                'button',
+                null,
+                'Add Option'
+            ),
+            React.createElement(
+                'button',
+                { onClick: removeAll },
+                'Remove All'
+            ),
+            React.createElement(
+                'button',
+                { disabled: app.options.length === 0, onClick: onMakeDecision },
+                'What should i do?'
+            )
+        )
+    ); //JSX expressions can only have one root element; wrap in <div>
+    ReactDOM.render(template, appRoot);
 };
 
 renderApp();

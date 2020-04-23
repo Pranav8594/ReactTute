@@ -25,3 +25,4 @@ var templateTwo = (
         {getLocation(user.location)}
     </div>
 );
+
