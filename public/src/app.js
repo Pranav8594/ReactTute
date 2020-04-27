@@ -26,7 +26,7 @@ const removeAll = () => {
     renderApp();
 }
 
-const onMakeDecision = () =>{
+const onMakeDecision = () => {
     const randomNum = Math.floor(Math.random() * app.options.length); //getting rid of decimals
     const option = app.options[randomNum];
     alert(option);
@@ -45,6 +45,7 @@ const renderApp = ()=>{
                     return <li key={option}>{option}</li>;
                 })
             }
+
             </ol>
             <form onSubmit={onFormSubmit}>
                 <input type="text" name="option"/>

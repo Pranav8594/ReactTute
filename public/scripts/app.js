@@ -1,43 +1,37 @@
 'use strict';
 
-var app = {
-    title: 'Visibility toggle',
-    msg: 'Hey! I am visible now',
-    toggle: false
-};
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var onToggle = function onToggle() {
-    app.toggle = !app.toggle;
-    console.log(app.toggle);
-    render();
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var appRoot = document.getElementById('app');
+var Person = function () {
+    function Person() {
+        var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Anon';
+        var age = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
-var render = function render() {
-    var template = React.createElement(
-        'div',
-        null,
-        React.createElement(
-            'h1',
-            null,
-            app.title
-        ),
-        React.createElement(
-            'button',
-            { onClick: onToggle },
-            app.toggle ? 'Hide details' : 'Show details'
-        ),
-        React.createElement(
-            'p',
-            null,
-            app.toggle && React.createElement(
-                'span',
-                null,
-                app.msg
-            )
-        )
-    );
-    ReactDOM.render(template, appRoot);
-};
-render();
+        _classCallCheck(this, Person);
+
+        //setting up default, if no param is passed
+        this.name = name; //this refers to the class instance, for eg. 'me' instace declared below
+        this.age = age;
+    }
+
+    _createClass(Person, [{
+        key: 'getGreeting',
+        value: function getGreeting() {
+            return 'Hi, I am ' + this.name + '!'; //template strings
+        }
+    }, {
+        key: 'getDescription',
+        value: function getDescription() {
+            return this.name + ' is ' + this.age + ' year(s) old.';
+        }
+    }]);
+
+    return Person;
+}();
+
+var me = new Person('Pranav Joshi', 25);
+var other = new Person();
+console.log(me.getDescription());
+console.log(other.getDescription());
