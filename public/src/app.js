@@ -1,61 +1,58 @@
-console.log('App.js is running!');
+class Header extends React.Component {
 
-var app = {
-    title: 'Indecision App',
-    subtitle: 'Put your life in the hands of a computer',
-    options: []
-}
+    render() {
+        return (
+            <div>
+                <h1>Indecison App</h1>
+                <h2>Put your life in the hands of a computer.</h2>
+            </div>
+            );
 
-const onFormSubmit = (e)=>{
-    e.preventDefault(); //prevents normal form behaviour
-    const option = e.target.elements.option.value; //tagetting form element here 
-    console.log(e);
-     if (option){
-         app.options.push(option);
-         e.target.elements.option.value = '';
-     }
-     renderApp();
+    }
 
 }
 
-//TODO: create remove all button
-//on click -> wipe the array and -> re-render
-const removeAll = () => {
+class Action extends React.Component{
 
-    app.options.length = 0; //empty array
-    renderApp();
+    render(){
+        return(
+            <div>
+                <button>What should i do?</button>
+            </div>
+        );
+    }
+
 }
 
-const onMakeDecision = () => {
-    const randomNum = Math.floor(Math.random() * app.options.length); //getting rid of decimals
-    const option = app.options[randomNum];
-    alert(option);
-};
+class Options extends React.Component{
 
-const appRoot =  document.getElementById('app');
-const renderApp = ()=>{
-    var template = ( //JSX: Javascrpt XML
-        <div> 
-            <h1>{app.title}</h1>
-            <p>{app.subtitle && <p>{app.subtitle}</p>}</p>
-            <p>{app.options.length > 0 ? 'Here are your options' : 'No options'} </p>
-            <ol>
-            { /*Array of JSX */
-                app.options.map((option)=>{
-                    return <li key={option}>{option}</li>;
-                })
-            }
+    render(){
+        return(
+            <div>
+                <p>This is Options component</p>
+            </div>
+        );
+    }
 
-            </ol>
-            <form onSubmit={onFormSubmit}>
-                <input type="text" name="option"/>
-                <button>Add Option</button>
-                <button onClick={removeAll}>Remove All</button>
-                <button disabled={app.options.length === 0} onClick={onMakeDecision}>What should i do?</button>
-            </form>
-        </div>
-    ); //JSX expressions can only have one root element; wrap in <div>
-    ReactDOM.render(template,appRoot);
+}
+class AddOptions extends React.Component{
+
+    render(){
+        return(
+            <div>
+            <p>This is AddOptions component</p>
+            </div>
+        );
+    }
+
 }
 
-renderApp();
+const jsx = (
+    <div>
+        <Header></Header>
+        <Action></Action>
+        <Options></Options>
+        <AddOptions></AddOptions>
+    </div>
+)
+ReactDOM.render(jsx, document.getElementById('app'));
