@@ -33,10 +33,14 @@ class Header extends React.Component {
 
 class Action extends React.Component{
 
+    hadndlePick(){
+        alert('handlePick');
+    }
+
     render(){
         return(
             <div>
-                <button>What should i do?</button>
+                <button onClick={this.hadndlePick}>What should i do?</button>
             </div>
         );
     }
@@ -45,9 +49,20 @@ class Action extends React.Component{
 
 class Options extends React.Component{
 
+    constructor(props){
+        super(props); // calling parent constructor
+        this.handleRemoveAll = this.handleRemoveAll.bind(this); //since not an event callback the 'this' context is preserved.
+    }
+
+    /*bind(this) sets the 'this' context for this function so that 'props' can be accessed. Sets the 'this' ctx same as render function. */
+    handleRemoveAll(){
+        console.log(this.props.options);
+    }
+
     render(){
         return(
             <div>
+            <button onClick={this.handleRemoveAll}>Remove All</button> 
             {
                 this.props.options.map((option)=>{
                     return <Option key={option} optionText={option}></Option>;
@@ -73,11 +88,21 @@ class Option extends React.Component{
 }
 
 class AddOptions extends React.Component{
-
+    onFormSubmit(e){
+        e.preventDefault();
+        const option = e.target.elements.option.value.trim(); //removes spaces before and after text
+        if(option){
+            alert(option);
+        }
+        
+    }
     render(){
         return(
             <div>
-            <p>This is AddOptions component</p>
+                <form onSubmit={this.onFormSubmit}>
+                    <input type="text" name="option"/>
+                    <button>Add Option</button>
+                </form>
             </div>
         );
     }
