@@ -1,20 +1,55 @@
-class IndecisonApp extends React.Component{
-    constructor(props){
+class IndecisonApp extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
-            options: ['option 1', 'option 2', 'option 3']
+            options: []
+        }
+        /*bind(this) sets the 'this' context for this function so that 'props' can be accessed. Sets the 'this' ctx same as render function. */
+        this.handleDeleteOptions = this.handleDeleteOptions.bind(this); //since not an event callback the 'this' context is preserved.
+        this.handlePick = this.handlePick.bind(this);
+        this.handleAddOptions = this.handleAddOptions.bind(this);
+    }
+
+    handleDeleteOptions() {
+        this.setState(() => {
+            return {
+                options: []
+            };
+        });
+    }
+
+    handlePick() {
+        const randomNum = Math.floor(Math.random() * this.state.options.length); //getting rid of decimals
+        const option = this.state.options[randomNum];
+        alert(option);
+    }
+
+    handleAddOptions(option) {
+
+        if (!option) {
+            return "Please enter a valid option"
+        } else if (this.state.options.indexOf(option) > -1) { // if > -1 means option exits in the array
+            return "This option already exists"
+        } else {
+            this.setState((prevState) => {
+                if (option) {
+                    return {
+                        options: prevState.options.concat([option])
+                    }
+                }
+            })
         }
     }
-    
-    render(){
+
+    render() {
         const title = 'Indecision App';
         const subTitle = 'Put your life in the hands of a computer.';
         return (
             <div>
                 <Header title={title} subTitle={subTitle}></Header>
-                <Action hasOptions={this.state.options.length > 0}></Action>
-                <Options options={this.state.options}></Options>
-                <AddOptions></AddOptions>
+                <Action hasOptions={this.state.options.length > 0} handlePick={this.handlePick}></Action>
+                <Options options={this.state.options} handleDeleteOptions={this.handleDeleteOptions}></Options>
+                <AddOptions handleAddOptions={this.handleAddOptions}></AddOptions>
             </div>
         )
     }
@@ -30,22 +65,18 @@ class Header extends React.Component {
                 <h1>{this.props.title}</h1>
                 <h2>{this.props.subTitle}</h2>
             </div>
-            );
+        );
 
     }
 
 }
 
-class Action extends React.Component{
+class Action extends React.Component {
 
-    hadndlePick(){
-        alert('handlePick');
-    }
-
-    render(){
-        return(
+    render() {
+        return (
             <div>
-                <button onClick={this.hadndlePick} disabled={!this.props.hasOptions}>
+                <button onClick={this.props.handlePick} disabled={!this.props.hasOptions}>
                     What should i do?
                 </button>
             </div>
@@ -54,37 +85,34 @@ class Action extends React.Component{
 
 }
 
-class Options extends React.Component{
+class Options extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props); // calling parent constructor
-        this.handleRemoveAll = this.handleRemoveAll.bind(this); //since not an event callback the 'this' context is preserved.
     }
 
     /*bind(this) sets the 'this' context for this function so that 'props' can be accessed. Sets the 'this' ctx same as render function. */
-    handleRemoveAll(){
-        console.log(this.props.options);
-    }
 
-    render(){
-        return(
+
+    render() {
+        return (
             <div>
-            <button onClick={this.handleRemoveAll}>Remove All</button> 
-            {
-                this.props.options.map((option)=>{
-                    return <Option key={option} optionText={option}></Option>;
-                })
-            }
+                <button onClick={this.props.handleDeleteOptions}>Remove All</button>
+                {
+                    this.props.options.map((option) => {
+                        return <Option key={option} optionText={option}></Option>;
+                    })
+                }
             </div>
         );
     }
 
 }
 
-class Option extends React.Component{
+class Option extends React.Component {
 
 
-    render(){
+    render() {
         return (
             <div>
                 {this.props.optionText}
@@ -94,20 +122,34 @@ class Option extends React.Component{
 
 }
 
-class AddOptions extends React.Component{
-    onFormSubmit(e){
+class AddOptions extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleAddOptions = this.handleAddOptions.bind(this);
+        this.state = {
+            error: undefined
+        }
+    }
+
+    handleAddOptions(e) {
         e.preventDefault();
         const option = e.target.elements.option.value.trim(); //removes spaces before and after text
-        if(option){
-            alert(option);
-        }
-        
+        const error = this.props.handleAddOptions(option);
+
+        this.setState(() => {
+            return {
+                error: error
+            }
+        })
+
     }
-    render(){
-        return(
+    render() {
+        return (
             <div>
-                <form onSubmit={this.onFormSubmit}>
-                    <input type="text" name="option"/>
+                {this.state.error && <p>{this.state.error}</p>}
+                <form onSubmit={this.handleAddOptions}>
+                    <input type="text" name="option" />
                     <button>Add Option</button>
                 </form>
             </div>
